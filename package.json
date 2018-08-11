@@ -1,0 +1,26 @@
+{
+  "name": "express-prometheus-middleware",
+  "version": "0.0.0",
+  "description": "red/use metrics for express applications",
+  "main": "src/index.js",
+  "repository": "https://github.com/joao-fontenele/express-prometheus-middleware.git",
+  "author": "João Paulo Fontenele Brito <jpfb@icomp.ufam.edu.br>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "release": "standard-version"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "standard-version": "^4.4.0"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "prom-client": "^11.1.1",
+    "response-time": "^2.3.2",
+    "url-value-parser": "^2.0.0"
+  }
+}
