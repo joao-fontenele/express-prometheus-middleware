@@ -1,6 +1,6 @@
 {
   "name": "express-prometheus-middleware",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "red/use metrics for express applications",
   "main": "src/index.js",
   "repository": "https://github.com/joao-fontenele/express-prometheus-middleware.git",
