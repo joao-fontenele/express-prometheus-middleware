@@ -12,8 +12,13 @@ const {
   normalizePath,
 } = require('./normalizers');
 
-module.exports = () => {
+const defaultOptions = {
+  metricsPath: '/metrics',
+};
+
+module.exports = (userOptions = {}) => {
   const app = express();
+  const metricsPath = userOptions.metricsPath || defaultOptions.metricsPath;
 
   /**
    * Corresponds to the R(equest rate), E(error rate), and D(uration of requests),
@@ -22,7 +27,7 @@ module.exports = () => {
   const redMiddleware = ResponseTime((req, res, time) => {
     const { path, method } = req;
 
-    if (path !== '/metrics') {
+    if (path !== metricsPath) {
       // will replace ids from the route with `#val` placeholder this serves to
       // measure the same routes, e.g., /image/id1, and /image/id2, will be
       // treated as the same route
@@ -40,7 +45,7 @@ module.exports = () => {
 
   app.use(redMiddleware);
 
-  app.get('/metrics', (req, res) => {
+  app.get(metricsPath, (req, res) => {
     res.set('Content-Type', Prometheus.register.contentType);
     res.end(Prometheus.register.metrics());
   });
