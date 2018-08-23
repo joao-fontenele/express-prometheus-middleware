@@ -1,7 +1,8 @@
 {
   "name": "express-prometheus-middleware",
   "version": "0.4.0",
-  "description": "red/use metrics for express applications",
+  "description": "RED/USE metrics for express applications",
+  "keywords": ["express", "prometheus", "metrics", "monit"],
   "main": "src/index.js",
   "repository": "https://github.com/joao-fontenele/express-prometheus-middleware.git",
   "author": "João Paulo Fontenele Brito <jpfb@icomp.ufam.edu.br>",
