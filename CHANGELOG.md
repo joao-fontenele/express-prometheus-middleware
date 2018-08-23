@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.5.0...v0.5.1) (2018-08-23)
+
+
+### Bug Fixes
+
+* route was wrong when mounting from another route ([c3bb869](https://github.com/joao-fontenele/express-prometheus-middleware/commit/c3bb869))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.4.0...v0.5.0) (2018-08-23)
 
