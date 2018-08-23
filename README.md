@@ -33,7 +33,7 @@ const PORT = 9091;
 app.use(promMid({
   metricsPath: '/metrics',
   collectDefaultMetrics: true,
-  requestDurationBuckers: [0.1, 0.5, 1, 1.5],
+  requestDurationBuckets: [0.1, 0.5, 1, 1.5],
 }));
 
 app.get('/hello', (req, res) => {
