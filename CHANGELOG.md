@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.4.0...v0.5.0) (2018-08-23)
+
+
+### Features
+
+* add keywords for package.json ([f66b7fa](https://github.com/joao-fontenele/express-prometheus-middleware/commit/f66b7fa))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.3.1...v0.4.0) (2018-08-19)
 
