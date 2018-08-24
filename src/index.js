@@ -15,9 +15,9 @@ const {
 const defaultOptions = {
   metricsPath: '/metrics',
   collectDefaultMetrics: true,
-  // buckets for response time from 0.1ms to 2500ms
+  // buckets for response time from 0.05s to 2.5s
   // these are aribtrary values since i dont know any better ¯\_(ツ)_/¯
-  requestDurationBuckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500, 1000, 2500],
+  requestDurationBuckets: Prometheus.exponentialBuckets(0.05, 1.75, 8),
 };
 
 module.exports = (userOptions = {}) => {
@@ -43,7 +43,8 @@ module.exports = (userOptions = {}) => {
 
       requestCount.inc({ route, method, status });
 
-      requestDuration.labels(route, method, status).observe(time);
+      // observe normalizing to seconds
+      requestDuration.labels(route, method, status).observe(time / 1000);
     }
   });
 
