@@ -51,7 +51,7 @@ app.listen(PORT, () => {
 
 - Default metrics from [prom-client](https://github.com/siimon/prom-client)
 - `http_requests_total`: Counter for total requests received, has labels `route`, `method`, `status`
-- `http_requests_duration_milliseconds`: - Duration of HTTP requests in milliseconds, has labels `route`, `method`, `status`
+- `http_request_duration_seconds`: - Duration of HTTP requests in seconds, has labels `route`, `method`, `status`
 
 The labels `route` and `status` are normalized:
 - `route`: will normalize id like route params
