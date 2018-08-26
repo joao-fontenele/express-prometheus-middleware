@@ -63,6 +63,60 @@ The labels `route` and `status` are normalized:
 - `route`: will normalize id like route params
 - `status`: will normalize to status code family groups, like `2XX` or `4XX`.
 
-#### Example prometheus queries
+### Example prometheus queries
 
-TODO
+In the examples below, Suppose you tagged your application as "myapp".
+
+#### Running instances
+
+```js
+sum(up{app="myapp"})
+```
+
+#### Overall error rate
+
+Rate of http status code 5XX responses
+
+```js
+sum(rate(http_requests_total{status="5XX", app="myapp"}[5m]))
+```
+
+
+#### 95% of requests served within seconds
+
+```js
+histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{app="myapp"}[5m])) by (le))
+```
+
+#### Average response time in seconds
+
+```js
+sum(rate(http_request_duration_seconds_sum{app="myapp"}[5m])) by (instance) / sum(rate(http_request_duration_seconds_count{app="myapp"}[5m])) by (instance)
+```
+
+#### Overall Request rate
+
+```js
+sum(rate(http_requests_total{app="myapp"}[5m])) by (instance)
+```
+
+#### Request rate by route
+
+In this example we are removing some health/status-check routes, replace them with your needs.
+
+```js
+sum(rate(http_requests_total{app="myapp", route!~"/|/healthz"}[5m])) by (instance, route)
+```
+
+#### CPU usage
+
+```js
+rate(process_cpu_system_seconds_total{app="myapp"}[5m])
+rate(process_cpu_user_seconds_total{app="myapp"}[5m])
+```
+
+#### Memory usage
+```js
+nodejs_heap_size_total_bytes{app="myapp"}
+nodejs_heap_size_used_bytes{app="myapp"}
+```
