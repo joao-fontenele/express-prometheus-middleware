@@ -26,7 +26,7 @@ npm i --save express-prometheus-middleware
 | :-: | :- | :- |
 | metricsPath | Url route that will expose the metrics for scraping. | `/metrics` |
 | collectDefaultMetrics | Whether or not to collect `prom-client` default metrics. These metrics are usefull for collecting saturation metrics, for example. | `true` |
-| requestDurationBuckets | Buckets for the request duration metrics (in milliseconds) histogram | `[0.10, 5, 15, 50, 100, 200, 300, 400, 500, 1000, 2500]` |
+| requestDurationBuckets | Buckets for the request duration metrics (in milliseconds) histogram | Uses `prom-client` utility: `Prometheus.exponentialBuckets(0.05, 1.75, 8)` |
 
 ### Example
 
@@ -42,6 +42,7 @@ app.use(promMid({
   requestDurationBuckets: [0.1, 0.5, 1, 1.5],
 }));
 
+// curl -X GET localhost:9091/hello?name=Chuck%20Norris
 app.get('/hello', (req, res) => {
   console.log('GET /hello');
   const { name = 'Anon' } = req.query;
