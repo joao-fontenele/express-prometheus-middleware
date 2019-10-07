@@ -22,6 +22,7 @@ const defaultOptions = {
 
 module.exports = (userOptions = {}) => {
   const app = express();
+  app.disable('x-powered-by');
   const options = Object.assign({}, defaultOptions, userOptions);
 
   const { metricsPath } = options;
