@@ -27,6 +27,7 @@ npm i --save express-prometheus-middleware
 | metricsPath | Url route that will expose the metrics for scraping. | `/metrics` |
 | collectDefaultMetrics | Whether or not to collect `prom-client` default metrics. These metrics are usefull for collecting saturation metrics, for example. | `true` |
 | requestDurationBuckets | Buckets for the request duration metrics (in milliseconds) histogram | Uses `prom-client` utility: `Prometheus.exponentialBuckets(0.05, 1.75, 8)` |
+| authenticate | Optional authentication callback, the function should receive as argument, the `req` object and return truthy for sucessfull authentication, or falsy, otherwise. This option supports Promise results. | `null` |
 
 ### Example
 
@@ -40,6 +41,14 @@ app.use(promMid({
   metricsPath: '/metrics',
   collectDefaultMetrics: true,
   requestDurationBuckets: [0.1, 0.5, 1, 1.5],
+  /**
+   * Uncomenting the `authenticate` callback will make the `metricsPath` route
+   * require authentication. This authentication callback can make a simple
+   * basic auth test, or even query a remote server to validate access.
+   * To access /metrics you could do:
+   * curl -X GET user:password@localhost:9091/metrics
+   */
+  // authenticate: req => req.headers.authorization === 'Basic dXNlcjpwYXNzd29yZA==',
 }));
 
 // curl -X GET localhost:9091/hello?name=Chuck%20Norris

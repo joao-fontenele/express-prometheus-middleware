@@ -14,6 +14,7 @@ const {
 
 const defaultOptions = {
   metricsPath: '/metrics',
+  authenticate: null,
   collectDefaultMetrics: true,
   // buckets for response time from 0.05s to 2.5s
   // these are aribtrary values since i dont know any better ¯\_(ツ)_/¯
@@ -61,9 +62,23 @@ module.exports = (userOptions = {}) => {
   /**
    * Metrics route to be used by prometheus to scrape metrics
    */
-  app.get(metricsPath, (req, res) => {
+  app.get(metricsPath, async (req, res, next) => {
+    if (typeof options.authenticate === 'function') {
+      let result = null;
+      try {
+        result = await options.authenticate(req);
+      } catch (err) {
+        // treat errors as failures to authenticate
+      }
+
+      // the requester failed to authenticate, then return next, so we don't
+      // hint at the existance of this route
+      if (!result) {
+        return next();
+      }
+    }
     res.set('Content-Type', Prometheus.register.contentType);
-    res.end(Prometheus.register.metrics());
+    return res.end(Prometheus.register.metrics());
   });
 
   return app;
