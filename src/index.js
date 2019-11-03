@@ -20,6 +20,7 @@ const defaultOptions = {
   // buckets for response time from 0.05s to 2.5s
   // these are aribtrary values since i dont know any better ¯\_(ツ)_/¯
   requestDurationBuckets: Prometheus.exponentialBuckets(0.05, 1.75, 8),
+  extraMasks: [],
 };
 
 module.exports = (userOptions = {}) => {
@@ -42,7 +43,7 @@ module.exports = (userOptions = {}) => {
     // will replace ids from the route with `#val` placeholder this serves to
     // measure the same routes, e.g., /image/id1, and /image/id2, will be
     // treated as the same route
-    const route = normalizePath(originalUrl);
+    const route = normalizePath(originalUrl, options.extraMasks);
 
     if (route !== metricsPath) {
       const status = normalizeStatusCode(res.statusCode);

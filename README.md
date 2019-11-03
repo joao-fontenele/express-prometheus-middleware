@@ -50,6 +50,11 @@ app.use(promMid({
    * curl -X GET user:password@localhost:9091/metrics
    */
   // authenticate: req => req.headers.authorization === 'Basic dXNlcjpwYXNzd29yZA==',
+  /**
+   * Uncommenting the `extraMasks` config will use the list of regexes to
+   * reformat URL path names and replace the values found with a placeholder value
+  */
+  // extraMasks: [/..:..:..:..:..:../],
 }));
 
 // curl -X GET localhost:9091/hello?name=Chuck%20Norris
