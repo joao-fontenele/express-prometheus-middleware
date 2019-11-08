@@ -12,8 +12,12 @@ const {
   normalizePath,
 } = require('./normalizers');
 
+
+const app = express();
+
 const defaultOptions = {
   metricsPath: '/metrics',
+  metricsApp: app,
   authenticate: null,
   collectDefaultMetrics: true,
   // buckets for response time from 0.05s to 2.5s
@@ -22,11 +26,10 @@ const defaultOptions = {
 };
 
 module.exports = (userOptions = {}) => {
-  const app = express();
   app.disable('x-powered-by');
   const options = Object.assign({}, defaultOptions, userOptions);
 
-  const { metricsPath } = options;
+  const { metricsPath, metricsApp } = options;
   const requestDuration = requestDurationGenerator(options.requestDurationBuckets);
 
   /**
@@ -62,7 +65,7 @@ module.exports = (userOptions = {}) => {
   /**
    * Metrics route to be used by prometheus to scrape metrics
    */
-  app.get(metricsPath, async (req, res, next) => {
+  metricsApp.get(metricsPath, async (req, res, next) => {
     if (typeof options.authenticate === 'function') {
       let result = null;
       try {
