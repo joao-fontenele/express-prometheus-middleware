@@ -18,10 +18,10 @@
     "release": "standard-version"
   },
   "devDependencies": {
-    "eslint": "^5.3.0",
-    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.13.0",
-    "standard-version": "^4.4.0"
+    "standard-version": "^7.0.0"
   },
   "dependencies": {
     "express": "^4.16.3",
