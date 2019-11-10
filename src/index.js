@@ -14,6 +14,7 @@ const {
 
 const defaultOptions = {
   metricsPath: '/metrics',
+  metricsApp: null,
   authenticate: null,
   collectDefaultMetrics: true,
   // buckets for response time from 0.05s to 2.5s
@@ -22,11 +23,14 @@ const defaultOptions = {
 };
 
 module.exports = (userOptions = {}) => {
-  const app = express();
-  app.disable('x-powered-by');
   const options = Object.assign({}, defaultOptions, userOptions);
 
-  const { metricsPath } = options;
+  const { metricsPath, metricsApp } = options;
+
+  // if no app is provided, instantiate one
+  const app = metricsApp || express();
+  app.disable('x-powered-by');
+
   const requestDuration = requestDurationGenerator(options.requestDurationBuckets);
 
   /**
