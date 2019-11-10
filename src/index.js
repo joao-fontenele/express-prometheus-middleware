@@ -23,7 +23,7 @@ const defaultOptions = {
 };
 
 module.exports = (userOptions = {}) => {
-  const options = Object.assign({}, defaultOptions, userOptions);
+  const options = { ...defaultOptions, ...userOptions };
 
   const { metricsPath, metricsApp } = options;
 
