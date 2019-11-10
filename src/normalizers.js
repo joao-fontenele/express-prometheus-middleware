@@ -20,7 +20,7 @@ const urlParser = new UrlValueParser();
  * like params in the url path.
  * @returns {string} a normalized path, withoud ids.
  */
-function normalizePath (originalUrl, placeholder = '#val') {
+function normalizePath(originalUrl, placeholder = '#val') {
   const { pathname } = url.parse(originalUrl);
   return urlParser.replacePathValues(pathname, placeholder);
 }
@@ -33,7 +33,7 @@ function normalizePath (originalUrl, placeholder = '#val') {
  * @param {!number} status - status code of the requests
  * @returns {string} the normalized status code.
  */
-function normalizeStatusCode (status) {
+function normalizeStatusCode(status) {
   if (status >= 200 && status < 300) {
     return '2XX';
   }

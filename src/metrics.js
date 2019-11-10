@@ -10,7 +10,7 @@ const requestCount = new Prometheus.Counter({
  * @param {!Array} buckets - array of numbers, representing the buckets for
  * request duration
  */
-function requestDurationGenerator (buckets) {
+function requestDurationGenerator(buckets) {
   return new Prometheus.Histogram({
     name: 'http_request_duration_seconds',
     help: 'Duration of HTTP requests in seconds',
