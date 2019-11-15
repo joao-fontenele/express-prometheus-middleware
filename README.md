@@ -28,6 +28,7 @@ npm i --save express-prometheus-middleware
 | metricsApp  | Express app that will expose metrics endpoint | `same app as the middleware` |
 | collectDefaultMetrics | Whether or not to collect `prom-client` default metrics. These metrics are usefull for collecting saturation metrics, for example. | `true` |
 | requestDurationBuckets | Buckets for the request duration metrics (in milliseconds) histogram | Uses `prom-client` utility: `Prometheus.exponentialBuckets(0.05, 1.75, 8)` |
+| extraMasks | Optional, list of regexes to be used as argument to [url-value-parser](https://www.npmjs.com/package/url-value-parser), this will cause extra route params,  to be replaced with a `#val` placeholder.  | no extra masks: `[]` |
 | authenticate | Optional authentication callback, the function should receive as argument, the `req` object and return truthy for sucessfull authentication, or falsy, otherwise. This option supports Promise results. | `null` |
 
 ### Example
@@ -50,6 +51,11 @@ app.use(promMid({
    * curl -X GET user:password@localhost:9091/metrics
    */
   // authenticate: req => req.headers.authorization === 'Basic dXNlcjpwYXNzd29yZA==',
+  /**
+   * Uncommenting the `extraMasks` config will use the list of regexes to
+   * reformat URL path names and replace the values found with a placeholder value
+  */
+  // extraMasks: [/..:..:..:..:..:../],
 }));
 
 // curl -X GET localhost:9091/hello?name=Chuck%20Norris
