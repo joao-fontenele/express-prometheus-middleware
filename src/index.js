@@ -3,7 +3,7 @@ const Prometheus = require('prom-client');
 const ResponseTime = require('response-time');
 
 const {
-  requestCount,
+  requestCountGenerator,
   requestDurationGenerator,
 } = require('./metrics');
 
@@ -32,7 +32,8 @@ module.exports = (userOptions = {}) => {
   const app = metricsApp || express();
   app.disable('x-powered-by');
 
-  const requestDuration = requestDurationGenerator(options.requestDurationBuckets);
+  const requestDuration = requestDurationGenerator(options.requestDurationBuckets, options.prefix);
+  const requestCount = requestCountGenerator(options.prefix);
 
   /**
    * Corresponds to the R(equest rate), E(error rate), and D(uration of requests),
@@ -59,7 +60,9 @@ module.exports = (userOptions = {}) => {
     // when this file is required, we will start to collect automatically
     // default metrics include common cpu and head usage metrics that can be
     // used to calculate saturation of the service
-    Prometheus.collectDefaultMetrics();
+    Prometheus.collectDefaultMetrics({
+      prefix: options.prefix,
+    });
   }
 
   app.use(redMiddleware);
