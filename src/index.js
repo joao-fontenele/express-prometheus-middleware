@@ -40,11 +40,15 @@ module.exports = (userOptions = {}) => {
    * of the RED metrics.
    */
   const redMiddleware = ResponseTime((req, res, time) => {
-    const { originalUrl, method } = req;
+    const { route: router, method } = req;
     // will replace ids from the route with `#val` placeholder this serves to
     // measure the same routes, e.g., /image/id1, and /image/id2, will be
     // treated as the same route
-    const route = normalizePath(originalUrl, options.extraMasks);
+    if (!router) {
+      return;
+    }
+
+    const route = normalizePath(router.path, options.extraMasks);
 
     if (route !== metricsPath) {
       const status = normalizeStatusCode(res.statusCode);
