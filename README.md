@@ -57,6 +57,10 @@ app.use(promMid({
    * reformat URL path names and replace the values found with a placeholder value
   */
   // extraMasks: [/..:..:..:..:..:../],
+  /**
+    * Uncommenting the `useOriginalUrl` config will swap using you route label from '/data/1' to '/data/:id'
+  /*
+  // useOriginalUrl: true,
 }));
 
 // curl -X GET localhost:9091/hello?name=Chuck%20Norris
