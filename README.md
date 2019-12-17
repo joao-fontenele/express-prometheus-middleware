@@ -31,6 +31,7 @@ npm i --save express-prometheus-middleware
 | extraMasks | Optional, list of regexes to be used as argument to [url-value-parser](https://www.npmjs.com/package/url-value-parser), this will cause extra route params,  to be replaced with a `#val` placeholder.  | no extra masks: `[]` |
 | authenticate | Optional authentication callback, the function should receive as argument, the `req` object and return truthy for sucessfull authentication, or falsy, otherwise. This option supports Promise results. | `null` |
 | prefix | Optional prefix for the metrics name | no prefix added | |
+| useOriginalUrl | Optional flag, in `false` will change you route label from url to the router mask | `true` | |
 
 ### Example
 
@@ -57,6 +58,10 @@ app.use(promMid({
    * reformat URL path names and replace the values found with a placeholder value
   */
   // extraMasks: [/..:..:..:..:..:../],
+  /**
+    * Uncommenting the `useOriginalUrl` config and setting it to `false` will swap using you route label from '/data/1' to '/data/:id'
+  /*
+  // useOriginalUrl: true,
 }));
 
 // curl -X GET localhost:9091/hello?name=Chuck%20Norris

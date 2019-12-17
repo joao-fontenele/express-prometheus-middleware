@@ -21,6 +21,8 @@ const defaultOptions = {
   // these are aribtrary values since i dont know any better ¯\_(ツ)_/¯
   requestDurationBuckets: Prometheus.exponentialBuckets(0.05, 1.75, 8),
   extraMasks: [],
+  // this is the flag which swap using originalUrl and route.path params
+  useOriginalUrl: true,
 };
 
 module.exports = (userOptions = {}) => {
@@ -40,11 +42,15 @@ module.exports = (userOptions = {}) => {
    * of the RED metrics.
    */
   const redMiddleware = ResponseTime((req, res, time) => {
-    const { originalUrl, method } = req;
+    const { originalUrl, route: routeData, method } = req;
     // will replace ids from the route with `#val` placeholder this serves to
     // measure the same routes, e.g., /image/id1, and /image/id2, will be
     // treated as the same route
-    const route = normalizePath(originalUrl, options.extraMasks);
+    if (!options.useOriginalUrl && !routeData) {
+      return;
+    }
+
+    const route = normalizePath(options.useOriginalUrl ? originalUrl : routeData.path, options.extraMasks);
 
     if (route !== metricsPath) {
       const status = normalizeStatusCode(res.statusCode);
