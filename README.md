@@ -58,7 +58,7 @@ app.use(promMid({
   */
   // extraMasks: [/..:..:..:..:..:../],
   /**
-    * Uncommenting the `useOriginalUrl` config will swap using you route label from '/data/1' to '/data/:id'
+    * Uncommenting the `useOriginalUrl` config and setting it to `false` will swap using you route label from '/data/1' to '/data/:id'
   /*
   // useOriginalUrl: true,
 }));
