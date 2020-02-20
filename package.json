@@ -28,5 +28,8 @@
     "prom-client": "^11.1.1",
     "response-time": "^2.3.2",
     "url-value-parser": "^2.0.0"
+  },
+  "optionalDependencies": {
+    "prometheus-gc-stats": "^0.6.2"
   }
 }

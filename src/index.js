@@ -17,6 +17,7 @@ const defaultOptions = {
   metricsApp: null,
   authenticate: null,
   collectDefaultMetrics: true,
+  collectGCMetrics: false,
   // buckets for response time from 0.05s to 2.5s
   // these are aribtrary values since i dont know any better ¯\_(ツ)_/¯
   requestDurationBuckets: Prometheus.exponentialBuckets(0.05, 1.75, 8),
@@ -85,6 +86,24 @@ module.exports = (userOptions = {}) => {
         return next();
       }
     }
+
+    if (options.collectGCMetrics) {
+      // if the option has been turned on, we start collecting garbage
+      // collector metrics too. using try/catch because the dependency is
+      // optional and it could not be installed
+      try {
+        /* eslint-disable global-require */
+        /* eslint-disable import/no-extraneous-dependencies */
+        const gcStats = require('prometheus-gc-stats');
+        /* eslint-enable import/no-extraneous-dependencies */
+        /* eslint-enable global-require */
+        const startGcStats = gcStats(Prometheus.register);
+        startGcStats();
+      } catch (err) {
+        // the dependency has not been installed, skipping
+      }
+    }
+
     res.set('Content-Type', Prometheus.register.contentType);
     return res.end(Prometheus.register.metrics());
   });
