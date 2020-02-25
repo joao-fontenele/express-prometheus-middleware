@@ -21,12 +21,13 @@ const defaultOptions = {
   // these are aribtrary values since i dont know any better ¯\_(ツ)_/¯
   requestDurationBuckets: Prometheus.exponentialBuckets(0.05, 1.75, 8),
   extraMasks: [],
+  normalizeStatus,
 };
 
 module.exports = (userOptions = {}) => {
   const options = { ...defaultOptions, ...userOptions };
 
-  const { metricsPath, metricsApp } = options;
+  const { metricsPath, metricsApp, normalizeStatus } = options;
 
   // if no app is provided, instantiate one
   const app = metricsApp || express();
@@ -47,7 +48,7 @@ module.exports = (userOptions = {}) => {
     const route = normalizePath(originalUrl, options.extraMasks);
 
     if (route !== metricsPath) {
-      const status = normalizeStatusCode(res.statusCode);
+      const status = normalizeStatus ? normalizeStatusCode(res.statusCode) : res.statusCode;
 
       requestCount.inc({ route, method, status });
 
