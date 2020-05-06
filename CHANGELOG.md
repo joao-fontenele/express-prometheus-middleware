@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.9.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.8.5...v0.9.0) (2020-05-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* to migrate, install express and prom-client as dependencies in
+your own project
+
+### Bug Fixes
+
+* use prom-client and express as peer dependencies ([4825c8c](https://github.com/joao-fontenele/express-prometheus-middleware/commit/4825c8c409f391d0797e5c02ddb03868c108db6e)), closes [#22](https://github.com/joao-fontenele/express-prometheus-middleware/issues/22)
+
 ### [0.8.5](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.8.4...v0.8.5) (2019-11-23)
 
 
