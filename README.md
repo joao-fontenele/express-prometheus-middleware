@@ -25,12 +25,12 @@ npm i --save express-prometheus-middleware
 | Name | Description | Default |
 | :-: | :- | :- |
 | metricsPath | Url route that will expose the metrics for scraping. | `/metrics` |
-| metricsApp  | Express app that will expose metrics endpoint | `same app as the middleware` |
+| metricsApp  | Express app that will expose metrics endpoint, if an app is provided, use it, instead of instantiating a new one | `null` |
 | collectDefaultMetrics | Whether or not to collect `prom-client` default metrics. These metrics are usefull for collecting saturation metrics, for example. | `true` |
 | requestDurationBuckets | Buckets for the request duration metrics (in milliseconds) histogram | Uses `prom-client` utility: `Prometheus.exponentialBuckets(0.05, 1.75, 8)` |
 | extraMasks | Optional, list of regexes to be used as argument to [url-value-parser](https://www.npmjs.com/package/url-value-parser), this will cause extra route params,  to be replaced with a `#val` placeholder.  | no extra masks: `[]` |
 | authenticate | Optional authentication callback, the function should receive as argument, the `req` object and return truthy for sucessfull authentication, or falsy, otherwise. This option supports Promise results. | `null` |
-| prefix | Optional prefix for the metrics name | no prefix added | |
+| prefix | Optional prefix for the metrics name | no prefix added |
 
 ### Example
 
@@ -57,6 +57,11 @@ app.use(promMid({
    * reformat URL path names and replace the values found with a placeholder value
   */
   // extraMasks: [/..:..:..:..:..:../],
+  /**
+   * The prefix option will cause all metrics to have the given prefix.
+   * E.g.: `app_prefix_http_requests_total`
+   */
+  // prefix: 'app_prefix_',
 }));
 
 // curl -X GET localhost:9091/hello?name=Chuck%20Norris
@@ -83,7 +88,7 @@ The labels `route` and `status` are normalized:
 
 ### Example prometheus queries
 
-In the examples below, Suppose you tagged your application as "myapp".
+In the examples below, Suppose you tagged your application as "myapp", in the prometheus scrapping config.
 
 #### Running instances
 
