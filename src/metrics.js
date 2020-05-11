@@ -4,11 +4,11 @@ const Prometheus = require('prom-client');
  * @param prefix - metrics name prefix
  * request counter
  */
-function requestCountGenerator(prefix = '') {
+function requestCountGenerator(labelNames,prefix = '') {
   return new Prometheus.Counter({
     name: `${prefix}http_requests_total`,
     help: 'Counter for total requests received',
-    labelNames: ['route', 'method', 'status'],
+    labelNames
   });
 }
 
@@ -17,12 +17,12 @@ function requestCountGenerator(prefix = '') {
  * @param prefix - metrics name prefix
  * request duration
  */
-function requestDurationGenerator(buckets, prefix = '') {
+function requestDurationGenerator(labelNames, buckets, prefix = '') {
   return new Prometheus.Histogram({
     name: `${prefix}http_request_duration_seconds`,
     help: 'Duration of HTTP requests in seconds',
-    labelNames: ['route', 'method', 'status'],
-    buckets,
+    labelNames,
+    buckets
   });
 }
 
