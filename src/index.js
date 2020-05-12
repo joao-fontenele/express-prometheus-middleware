@@ -22,14 +22,14 @@ const defaultOptions = {
   requestDurationBuckets: Prometheus.exponentialBuckets(0.05, 1.75, 8),
   extraMasks: [],
   customLabels: [],
-  transformLabels: null
+  transformLabels: null,
 };
 
 module.exports = (userOptions = {}) => {
   const options = { ...defaultOptions, ...userOptions };
-  const originalLabels=['route', 'method', 'status'];
-  options.customLabels= new Set([...originalLabels, ...options.customLabels]);
-  options.customLabels=[...options.customLabels];
+  const originalLabels = ['route', 'method', 'status'];
+  options.customLabels = new Set([...originalLabels, ...options.customLabels]);
+  options.customLabels = [...options.customLabels];
   const { metricsPath, metricsApp } = options;
 
   // if no app is provided, instantiate one
@@ -37,12 +37,14 @@ module.exports = (userOptions = {}) => {
   app.disable('x-powered-by');
 
   const requestDuration = requestDurationGenerator(
-                            options.customLabels,
-                            options.requestDurationBuckets, 
-                            options.prefix);
+    options.customLabels,
+    options.requestDurationBuckets,
+    options.prefix,
+  );
   const requestCount = requestCountGenerator(
-                            options.customLabels,
-                            options.prefix);
+    options.customLabels,
+    options.prefix,
+  );
 
   /**
    * Corresponds to the R(equest rate), E(error rate), and D(uration of requests),
@@ -57,15 +59,15 @@ module.exports = (userOptions = {}) => {
 
     if (route !== metricsPath) {
       const status = normalizeStatusCode(res.statusCode);
-      const labels={ route, method, status };
+      const labels = { route, method, status };
 
-      if (options.transformLabels!=null){
-          options.transformLabels(labels, req, res);
+      if (options.transformLabels != null) {
+        options.transformLabels(labels, req, res);
       }
       requestCount.inc(labels);
 
       // observe normalizing to seconds
-      requestDuration.observe(labels,time / 1000);
+      requestDuration.observe(labels, time / 1000);
     }
   });
 

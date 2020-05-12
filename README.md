@@ -66,8 +66,8 @@ app.use(promMid({
   /**
    * Can add custom labels with customLabels and transformLabels options
    */
-  //customLabels:['contentType'] 
-  //transformLabels:(labels, req, res)=>{labels['contentType']=req.headers['content-type']}
+  // customLabels:['contentType'] 
+  // transformLabels:(labels, req, res)=>{labels['contentType']=req.headers['content-type']}
 }));
 
 // curl -X GET localhost:9091/hello?name=Chuck%20Norris
