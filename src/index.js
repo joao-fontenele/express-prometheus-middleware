@@ -76,7 +76,9 @@ module.exports = (userOptions = {}) => {
       const gcStats = require('prometheus-gc-stats');
       /* eslint-enable import/no-extraneous-dependencies */
       /* eslint-enable global-require */
-      const startGcStats = gcStats(Prometheus.register);
+      const startGcStats = gcStats(Prometheus.register, {
+        prefix: options.prefix,
+      });
       startGcStats();
     } catch (err) {
       // the dependency has not been installed, skipping
