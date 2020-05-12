@@ -1,6 +1,6 @@
 {
   "name": "express-prometheus-middleware",
-  "version": "0.8.5",
+  "version": "0.9.1",
   "description": "RED/USE metrics for express applications",
   "keywords": [
     "express",
@@ -21,19 +21,19 @@
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.13.0",
+    "express": "4.x",
+    "prom-client": ">= 10.x <= 12.x",
     "standard-version": "^7.0.0"
   },
   "dependencies": {
-    "express": "^4.16.3",
-    "prom-client": "^11.1.1",
     "response-time": "^2.3.2",
     "url-value-parser": "^2.0.0"
-  },
-  "optionalDependencies": {
-    "prometheus-gc-stats": "^0.6.2"
   },
   "peerDependencies": {
     "express": "4.x",
     "prom-client": ">= 10.x <= 12.x"
+  },
+  "optionalDependencies": {
+    "prometheus-gc-stats": "^0.6.2"
   }
 }
