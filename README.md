@@ -5,7 +5,6 @@
 [![devDependency Status](https://david-dm.org/joao-fontenele/express-prometheus-middleware/dev-status.svg)](https://david-dm.org/joao-fontenele/express-prometheus-middleware#info=devDependencies)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
-
 This is a middleware for express servers, that expose metrics for prometheus.
 
 The metrics exposed allows to calculate common RED (Request, Error rate, Duration of requests), and USE (Utilisation, Error rate, and Saturation), metrics
@@ -27,6 +26,7 @@ npm i --save express-prometheus-middleware
 | metricsPath | Url route that will expose the metrics for scraping. | `/metrics` |
 | metricsApp  | Express app that will expose metrics endpoint, if an app is provided, use it, instead of instantiating a new one | `null` |
 | collectDefaultMetrics | Whether or not to collect `prom-client` default metrics. These metrics are usefull for collecting saturation metrics, for example. | `true` |
+| collectGCMetrics | Whether or not to collect garbage collection metrics via module `prometheus-gc-stats`. Dependency `prometheus-gc-stats` is marked as optional, hence if this option is set to `true` but npm/yarn could not install the dependency, no garbage collection metric will be collected. | `false` |
 | requestDurationBuckets | Buckets for the request duration metrics (in milliseconds) histogram | Uses `prom-client` utility: `Prometheus.exponentialBuckets(0.05, 1.75, 8)` |
 | extraMasks | Optional, list of regexes to be used as argument to [url-value-parser](https://www.npmjs.com/package/url-value-parser), this will cause extra route params,  to be replaced with a `#val` placeholder.  | no extra masks: `[]` |
 | authenticate | Optional authentication callback, the function should receive as argument, the `req` object and return truthy for sucessfull authentication, or falsy, otherwise. This option supports Promise results. | `null` |
@@ -83,6 +83,7 @@ app.listen(PORT, () => {
 - `http_request_duration_seconds`: - Duration of HTTP requests in seconds, has labels `route`, `method`, `status`
 
 The labels `route` and `status` are normalized:
+
 - `route`: will normalize id like route params
 - `status`: will normalize to status code family groups, like `2XX` or `4XX`.
 
@@ -103,7 +104,6 @@ Rate of http status code 5XX responses
 ```js
 sum(rate(http_requests_total{status="5XX", app="myapp"}[5m]))
 ```
-
 
 #### 95% of requests served within seconds
 
@@ -139,6 +139,7 @@ rate(process_cpu_user_seconds_total{app="myapp"}[5m])
 ```
 
 #### Memory usage
+
 ```js
 nodejs_heap_size_total_bytes{app="myapp"}
 nodejs_heap_size_used_bytes{app="myapp"}
