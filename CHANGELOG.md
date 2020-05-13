@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.4](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.3...v0.9.4) (2020-05-13)
+
+
+### Features
+
+* add optional dependency to collect garbage collector metrics too ([6a1eb87](https://github.com/joao-fontenele/express-prometheus-middleware/commit/6a1eb875c097269661a0d2c36530b6188bb256ae))
+
 ### [0.9.3](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.2...v0.9.3) (2020-05-13)
 
 ### [0.9.2](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.1...v0.9.2) (2020-05-13)
