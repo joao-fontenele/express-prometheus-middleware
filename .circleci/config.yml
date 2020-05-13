@@ -1,0 +1,29 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    working_directory: ~/app
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Deps
+          command: yarn
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Lint Commits
+          command: npx commitlint-circle
+      - run:
+          name: Lint Code
+          command: yarn lint
+
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test
