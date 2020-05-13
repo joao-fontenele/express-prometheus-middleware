@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.2](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.1...v0.9.2) (2020-05-13)
+
 ### [0.9.1](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.0...v0.9.1) (2020-05-06)
 
 ## [0.9.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.8.5...v0.9.0) (2020-05-06)
