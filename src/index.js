@@ -22,19 +22,30 @@ const defaultOptions = {
   // these are aribtrary values since i dont know any better ¯\_(ツ)_/¯
   requestDurationBuckets: Prometheus.exponentialBuckets(0.05, 1.75, 8),
   extraMasks: [],
+  customLabels: [],
+  transformLabels: null,
 };
 
 module.exports = (userOptions = {}) => {
   const options = { ...defaultOptions, ...userOptions };
-
+  const originalLabels = ['route', 'method', 'status'];
+  options.customLabels = new Set([...originalLabels, ...options.customLabels]);
+  options.customLabels = [...options.customLabels];
   const { metricsPath, metricsApp } = options;
 
   // if no app is provided, instantiate one
   const app = metricsApp || express();
   app.disable('x-powered-by');
 
-  const requestDuration = requestDurationGenerator(options.requestDurationBuckets, options.prefix);
-  const requestCount = requestCountGenerator(options.prefix);
+  const requestDuration = requestDurationGenerator(
+    options.customLabels,
+    options.requestDurationBuckets,
+    options.prefix,
+  );
+  const requestCount = requestCountGenerator(
+    options.customLabels,
+    options.prefix,
+  );
 
   /**
    * Corresponds to the R(equest rate), E(error rate), and D(uration of requests),
@@ -49,11 +60,15 @@ module.exports = (userOptions = {}) => {
 
     if (route !== metricsPath) {
       const status = normalizeStatusCode(res.statusCode);
+      const labels = { route, method, status };
 
-      requestCount.inc({ route, method, status });
+      if (typeof options.transformLabels === 'function') {
+        options.transformLabels(labels, req, res);
+      }
+      requestCount.inc(labels);
 
       // observe normalizing to seconds
-      requestDuration.labels(route, method, status).observe(time / 1000);
+      requestDuration.observe(labels, time / 1000);
     }
   });
 
