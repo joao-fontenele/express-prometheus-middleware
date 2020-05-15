@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.5](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.4...v0.9.5) (2020-05-15)
+
+
+### Features
+
+* add posibility to add custom labels ([7e48758](https://github.com/joao-fontenele/express-prometheus-middleware/commit/7e487584d8ebe073de4f87bb478eba1e8cdd2205))
+
 ### [0.9.4](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.3...v0.9.4) (2020-05-13)
 
 
