@@ -9,6 +9,9 @@
     "monit"
   ],
   "main": "src/index.js",
+  "files": [
+    "src/"
+  ],
   "repository": "https://github.com/joao-fontenele/express-prometheus-middleware.git",
   "author": "João Paulo Fontenele Brito <jpfb@icomp.ufam.edu.br>",
   "license": "MIT",
