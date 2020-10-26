@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.6...v1.0.0) (2020-10-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* The /metrics route will not be exposed through the middleware if the 'metricsApp' option is provided.
+
+### Features
+
+* allow metrics route to be exposed on separate port ([69af583](https://github.com/joao-fontenele/express-prometheus-middleware/commit/69af583b24d40bbec5bfd1181d806832052669b1))
+
 ### [0.9.6](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.5...v0.9.6) (2020-05-18)
 
 ### [0.9.5](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.4...v0.9.5) (2020-05-15)
