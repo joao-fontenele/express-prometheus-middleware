@@ -33,8 +33,7 @@ module.exports = (userOptions = {}) => {
   options.customLabels = [...options.customLabels];
   const { metricsPath, metricsApp } = options;
 
-  // if no app is provided, instantiate one
-  const app = metricsApp || express();
+  const app = express();
   app.disable('x-powered-by');
 
   const requestDuration = requestDurationGenerator(
@@ -105,7 +104,8 @@ module.exports = (userOptions = {}) => {
   /**
    * Metrics route to be used by prometheus to scrape metrics
    */
-  app.get(metricsPath, async (req, res, next) => {
+  const routeApp = metricsApp || app;
+  routeApp.get(metricsPath, async (req, res, next) => {
     if (typeof options.authenticate === 'function') {
       let result = null;
       try {
