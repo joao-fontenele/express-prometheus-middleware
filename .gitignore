@@ -8,6 +8,8 @@ yarn-error.log*
 # generated documentation
 docs
 
+.dccache
+
 # Runtime data
 pids
 *.pid
