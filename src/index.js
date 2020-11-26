@@ -59,7 +59,9 @@ module.exports = (userOptions = {}) => {
     const route = normalizePath(originalUrl, options.extraMasks);
 
     if (route !== metricsPath) {
-      const status = normalizeStatus ? normalizeStatusCode(res.statusCode) : res.statusCode.toString();
+      const status = normalizeStatus ?
+        normalizeStatusCode(res.statusCode) : res.statusCode.toString();
+
       const labels = { route, method, status };
 
       if (typeof options.transformLabels === 'function') {
