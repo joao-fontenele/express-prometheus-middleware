@@ -24,6 +24,7 @@ const defaultOptions = {
   extraMasks: [],
   customLabels: [],
   transformLabels: null,
+  normalizeStatus: true,
 };
 
 module.exports = (userOptions = {}) => {
@@ -31,7 +32,7 @@ module.exports = (userOptions = {}) => {
   const originalLabels = ['route', 'method', 'status'];
   options.customLabels = new Set([...originalLabels, ...options.customLabels]);
   options.customLabels = [...options.customLabels];
-  const { metricsPath, metricsApp } = options;
+  const { metricsPath, metricsApp, normalizeStatus } = options;
 
   const app = express();
   app.disable('x-powered-by');
@@ -58,7 +59,7 @@ module.exports = (userOptions = {}) => {
     const route = normalizePath(originalUrl, options.extraMasks);
 
     if (route !== metricsPath) {
-      const status = normalizeStatusCode(res.statusCode);
+      const status = normalizeStatus ? normalizeStatusCode(res.statusCode) : res.statusCode.toString();
       const labels = { route, method, status };
 
       if (typeof options.transformLabels === 'function') {
