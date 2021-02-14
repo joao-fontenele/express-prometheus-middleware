@@ -29,6 +29,8 @@ npm i --save express-prometheus-middleware
 | collectDefaultMetrics | Whether or not to collect `prom-client` default metrics. These metrics are usefull for collecting saturation metrics, for example. | `true` |
 | collectGCMetrics | Whether or not to collect garbage collection metrics via module `prometheus-gc-stats`. Dependency `prometheus-gc-stats` is marked as optional, hence if this option is set to `true` but npm/yarn could not install the dependency, no garbage collection metric will be collected. | `false` |
 | requestDurationBuckets | Buckets for the request duration metrics (in milliseconds) histogram | Uses `prom-client` utility: `Prometheus.exponentialBuckets(0.05, 1.75, 8)` |
+| requestLengthBuckets | Buckets for the request length metrics (in bytes) histogram | [512, 1024, 5120, 10240, 51200, 102400, 512000, 1048576, 5242880, 10485760] |
+| responseLengthBuckets | Buckets for the response length metrics (in bytes) histogram | [512, 1024, 5120, 10240, 51200, 102400, 512000, 1048576, 5242880, 10485760] |
 | extraMasks | Optional, list of regexes to be used as argument to [url-value-parser](https://www.npmjs.com/package/url-value-parser), this will cause extra route params,  to be replaced with a `#val` placeholder.  | no extra masks: `[]` |
 | authenticate | Optional authentication callback, the function should receive as argument, the `req` object and return truthy for sucessfull authentication, or falsy, otherwise. This option supports Promise results. | `null` |
 | prefix | Optional prefix for the metrics name | no prefix added |
@@ -46,6 +48,8 @@ app.use(promMid({
   metricsPath: '/metrics',
   collectDefaultMetrics: true,
   requestDurationBuckets: [0.1, 0.5, 1, 1.5],
+  requestLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
+  responseLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
   /**
    * Uncomenting the `authenticate` callback will make the `metricsPath` route
    * require authentication. This authentication callback can make a simple
@@ -119,6 +123,18 @@ sum(rate(http_requests_total{status="5XX", app="myapp"}[5m]))
 
 ```js
 histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{app="myapp"}[5m])) by (le))
+```
+
+#### 95% of request length
+
+```js
+histogram_quantile(0.95, sum(rate(http_request_length_bytes_bucket{app="myapp"}[5m])) by (le))
+```
+
+#### 95% of response length
+
+```js
+histogram_quantile(0.95, sum(rate(http_response_length_bytes_bucket{app="myapp"}[5m])) by (le))
 ```
 
 #### Average response time in seconds

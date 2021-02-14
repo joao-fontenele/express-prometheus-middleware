@@ -5,6 +5,8 @@ const ResponseTime = require('response-time');
 const {
   requestCountGenerator,
   requestDurationGenerator,
+  requestLengthGenerator,
+  responseLengthGenerator,
 } = require('./metrics');
 
 const {
@@ -19,8 +21,22 @@ const defaultOptions = {
   collectDefaultMetrics: true,
   collectGCMetrics: false,
   // buckets for response time from 0.05s to 2.5s
-  // these are aribtrary values since i dont know any better ¯\_(ツ)_/¯
+  // these are arbitrary values since i dont know any better ¯\_(ツ)_/¯
   requestDurationBuckets: Prometheus.exponentialBuckets(0.05, 1.75, 8),
+  requestLengthBuckets: [
+    512, 1024, // Less than 1KiB
+    5120, 10240, // Between 1KiB to 10KiB
+    51200, 102400, // Between 10KiB to 100KiB
+    512000, 1048576, // Between 100KiB to 1MiB
+    5242880, 10485760, // Between 1MiB to 10MiB
+  ],
+  responseLengthBuckets: [
+    512, 1024, // Less than 1KiB
+    5120, 10240, // Between 1KiB to 10KiB
+    51200, 102400, // Between 10KiB to 100KiB
+    512000, 1048576, // Between 100KiB to 1MiB
+    5242880, 10485760, // Between 1MiB to 10MiB
+  ],
   extraMasks: [],
   customLabels: [],
   transformLabels: null,
@@ -43,6 +59,16 @@ module.exports = (userOptions = {}) => {
   );
   const requestCount = requestCountGenerator(
     options.customLabels,
+    options.prefix,
+  );
+  const requestLength = requestLengthGenerator(
+    options.customLabels,
+    options.requestLengthBuckets,
+    options.prefix,
+  );
+  const responseLength = responseLengthGenerator(
+    options.customLabels,
+    options.responseLengthBuckets,
     options.prefix,
   );
 
@@ -68,6 +94,18 @@ module.exports = (userOptions = {}) => {
 
       // observe normalizing to seconds
       requestDuration.observe(labels, time / 1000);
+
+      // observe request length
+      const reqLength = req.get('Content-Length');
+      if (reqLength) {
+        requestLength.observe(labels, Number(reqLength));
+      }
+
+      // observe response length
+      const resLength = res.get('Content-Length');
+      if (resLength) {
+        responseLength.observe(labels, Number(resLength));
+      }
     }
   });
 
