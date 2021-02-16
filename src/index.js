@@ -125,7 +125,7 @@ module.exports = (userOptions = {}) => {
     }
 
     res.set('Content-Type', Prometheus.register.contentType);
-    return res.end(Prometheus.register.metrics());
+    return res.end(await Prometheus.register.metrics());
   });
 
   return app;
