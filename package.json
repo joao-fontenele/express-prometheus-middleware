@@ -1,6 +1,6 @@
 {
   "name": "express-prometheus-middleware",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "RED/USE metrics for express applications",
   "keywords": [
     "express",
@@ -29,8 +29,8 @@
     "eslint-plugin-import": "^2.13.0",
     "express": "4.x",
     "husky": "^4.2.5",
-    "prom-client": ">= 10.x <= 12.x",
-    "standard-version": "^7.0.0"
+    "prom-client": ">= 10.x <= 13.x",
+    "standard-version": "^8.0.1"
   },
   "dependencies": {
     "response-time": "^2.3.2",
@@ -38,7 +38,7 @@
   },
   "peerDependencies": {
     "express": "4.x",
-    "prom-client": ">= 10.x <= 12.x"
+    "prom-client": ">= 10.x <= 13.x"
   },
   "optionalDependencies": {
     "prometheus-gc-stats": "^0.6.2"
