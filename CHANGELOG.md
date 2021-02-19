@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v1.0.0...v1.1.0) (2021-02-19)
+
+
+### Features
+
+* alter to normalization of status code to an function optional ([09cfa46](https://github.com/joao-fontenele/express-prometheus-middleware/commit/09cfa46b9cfc6c61260f4cb3e7a9b59a81b8e489))
+* extend compatibility with prom-client v13.x ([e18732b](https://github.com/joao-fontenele/express-prometheus-middleware/commit/e18732bc11fef7474b7dd0bad50b52982ea11edc))
+
 ## [1.0.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v0.9.6...v1.0.0) (2020-10-26)
 
 
