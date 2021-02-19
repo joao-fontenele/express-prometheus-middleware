@@ -30,7 +30,7 @@
     "express": "4.x",
     "husky": "^4.2.5",
     "prom-client": ">= 10.x <= 13.x",
-    "standard-version": "^7.0.0"
+    "standard-version": "^8.0.1"
   },
   "dependencies": {
     "response-time": "^2.3.2",
