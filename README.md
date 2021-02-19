@@ -29,8 +29,8 @@ npm i --save express-prometheus-middleware
 | collectDefaultMetrics | Whether or not to collect `prom-client` default metrics. These metrics are usefull for collecting saturation metrics, for example. | `true` |
 | collectGCMetrics | Whether or not to collect garbage collection metrics via module `prometheus-gc-stats`. Dependency `prometheus-gc-stats` is marked as optional, hence if this option is set to `true` but npm/yarn could not install the dependency, no garbage collection metric will be collected. | `false` |
 | requestDurationBuckets | Buckets for the request duration metrics (in milliseconds) histogram | Uses `prom-client` utility: `Prometheus.exponentialBuckets(0.05, 1.75, 8)` |
-| requestLengthBuckets | Buckets for the request length metrics (in bytes) histogram | [512, 1024, 5120, 10240, 51200, 102400, 512000, 1048576, 5242880, 10485760] |
-| responseLengthBuckets | Buckets for the response length metrics (in bytes) histogram | [512, 1024, 5120, 10240, 51200, 102400, 512000, 1048576, 5242880, 10485760] |
+| requestLengthBuckets | Buckets for the request length metrics (in bytes) histogram | no buckets (The request length metrics are not collected): `[]` |
+| responseLengthBuckets | Buckets for the response length metrics (in bytes) histogram | no buckets (The response length metrics are not collected) `[]` |
 | extraMasks | Optional, list of regexes to be used as argument to [url-value-parser](https://www.npmjs.com/package/url-value-parser), this will cause extra route params,  to be replaced with a `#val` placeholder.  | no extra masks: `[]` |
 | authenticate | Optional authentication callback, the function should receive as argument, the `req` object and return truthy for sucessfull authentication, or falsy, otherwise. This option supports Promise results. | `null` |
 | prefix | Optional prefix for the metrics name | no prefix added |
