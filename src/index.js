@@ -57,7 +57,7 @@ module.exports = (userOptions = {}) => {
     // will replace ids from the route with `#val` placeholder this serves to
     // measure the same routes, e.g., /image/id1, and /image/id2, will be
     // treated as the same route
-    const customNormalizedPath = typeof options.customUrlNormalizer === 'function'
+    const customNormalizedPath = typeof options.customPathNormalizer === 'function'
       ? options.customPathNormalizer(originalUrl, req, res) : null;
 
     const route = normalizePath(customNormalizedPath || originalUrl, options.extraMasks);
