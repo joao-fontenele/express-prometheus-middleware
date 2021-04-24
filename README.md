@@ -37,6 +37,9 @@ npm i --save express-prometheus-middleware
 | customLabels | Optional Array containing extra labels, used together with  `transformLabels` | no extra labels: `[]` |
 | transformLabels | Optional `function(labels, req, res)` adds to the labels object dynamic values for each label in `customLabels` | `null` |
 | normalizeStatus | Optional parameter to disable normalization of the status code. Example of normalized and non-normalized status code respectively: 4xx and 422.| true
+| customPathNormalizer | Optional `function(path, req, res)` to apply custom path normalization function | null
+
+
 ### Example
 
 ```js
@@ -77,6 +80,11 @@ app.use(promMid({
   //   // eslint-disable-next-line no-param-reassign
   //   labels.contentType = req.headers['content-type'];
   // },
+  // customPathNormalizer(path) {
+  //  if (path.includes('test')) {
+  //    reutrn 'test';
+  //  }
+  // }
 }));
 
 // curl -X GET localhost:9091/hello?name=Chuck%20Norris
