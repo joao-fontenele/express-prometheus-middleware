@@ -26,7 +26,37 @@ function requestDurationGenerator(labelNames, buckets, prefix = '') {
   });
 }
 
+/**
+ * @param {!Array} buckets - array of numbers, representing the buckets for
+ * @param prefix - metrics name prefix
+ * request length
+ */
+function requestLengthGenerator(labelNames, buckets, prefix = '') {
+  return new Prometheus.Histogram({
+    name: `${prefix}http_request_length_bytes`,
+    help: 'Content-Length of HTTP request',
+    labelNames,
+    buckets,
+  });
+}
+
+/**
+ * @param {!Array} buckets - array of numbers, representing the buckets for
+ * @param prefix - metrics name prefix
+ * response length
+ */
+function responseLengthGenerator(labelNames, buckets, prefix = '') {
+  return new Prometheus.Histogram({
+    name: `${prefix}http_response_length_bytes`,
+    help: 'Content-Length of HTTP response',
+    labelNames,
+    buckets,
+  });
+}
+
 module.exports = {
   requestCountGenerator,
   requestDurationGenerator,
+  requestLengthGenerator,
+  responseLengthGenerator,
 };
