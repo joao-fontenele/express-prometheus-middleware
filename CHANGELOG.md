@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v1.1.0...v1.2.0) (2021-04-24)
+
+
+### Features
+
+* add metrics for request length and response length ([30ec2ed](https://github.com/joao-fontenele/express-prometheus-middleware/commit/30ec2eddf660858a22a6677571d8f3afd022d241))
+
+
+### Bug Fixes
+
+* commitlint misreporting release commit ([cbd4101](https://github.com/joao-fontenele/express-prometheus-middleware/commit/cbd410192dd7bf8003a56471ecae145274377267))
+
 ## [1.1.0](https://github.com/joao-fontenele/express-prometheus-middleware/compare/v1.0.0...v1.1.0) (2021-02-19)
 
 
