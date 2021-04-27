@@ -29,6 +29,7 @@ const defaultOptions = {
   customLabels: [],
   transformLabels: null,
   normalizeStatus: true,
+  resetOnScrape: false,
 };
 
 module.exports = (userOptions = {}) => {
@@ -155,7 +156,11 @@ module.exports = (userOptions = {}) => {
     }
 
     res.set('Content-Type', Prometheus.register.contentType);
-    return res.end(await Prometheus.register.metrics());
+    const result = res.end(await Prometheus.register.metrics());
+    if (options.resetOnScrape) {
+      Prometheus.register.resetMetrics();
+    }
+    return result;
   });
 
   return app;

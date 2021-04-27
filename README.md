@@ -37,6 +37,7 @@ npm i --save express-prometheus-middleware
 | customLabels | Optional Array containing extra labels, used together with  `transformLabels` | no extra labels: `[]` |
 | transformLabels | Optional `function(labels, req, res)` adds to the labels object dynamic values for each label in `customLabels` | `null` |
 | normalizeStatus | Optional parameter to disable normalization of the status code. Example of normalized and non-normalized status code respectively: 4xx and 422.| true
+| resetOnScrape | Optional parameter to reset the metrics in the default registry after every scrape| true
 ### Example
 
 ```js
