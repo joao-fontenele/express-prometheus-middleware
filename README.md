@@ -14,7 +14,7 @@ The metrics exposed allows to calculate common RED (Request, Error rate, Duratio
 
 The following peer dependencies are required:
 
-prom-client
+- prom-client
 
 ## Install
 
