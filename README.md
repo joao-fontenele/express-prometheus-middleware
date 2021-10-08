@@ -10,6 +10,12 @@ This is a middleware for express servers, that expose metrics for prometheus.
 
 The metrics exposed allows to calculate common RED (Request, Error rate, Duration of requests), and USE (Utilisation, Error rate, and Saturation), metrics
 
+# Prerequisites
+
+The following peer dependencies are required:
+
+- prom-client
+
 ## Install
 
 ``` bash
