@@ -29,6 +29,8 @@ const defaultOptions = {
   customLabels: [],
   transformLabels: null,
   normalizeStatus: true,
+  metricNameRequestDuration: 'http_request_duration_seconds_sum',
+  metricNameRequestCount: 'http_request_duration_seconds_count',
 };
 
 module.exports = (userOptions = {}) => {
@@ -44,10 +46,12 @@ module.exports = (userOptions = {}) => {
   const requestDuration = requestDurationGenerator(
     options.customLabels,
     options.requestDurationBuckets,
+    options.metricNameRequestDuration,
     options.prefix,
   );
   const requestCount = requestCountGenerator(
     options.customLabels,
+    options.metricNameRequestCount,
     options.prefix,
   );
   const requestLength = requestLengthGenerator(

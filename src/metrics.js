@@ -4,9 +4,9 @@ const Prometheus = require('prom-client');
  * @param prefix - metrics name prefix
  * request counter
  */
-function requestCountGenerator(labelNames, prefix = '') {
+function requestCountGenerator(labelNames, metricName, prefix = '') {
   return new Prometheus.Counter({
-    name: `${prefix}http_requests_total`,
+    name: `${prefix}${metricName}`,
     help: 'Counter for total requests received',
     labelNames,
   });
@@ -17,9 +17,9 @@ function requestCountGenerator(labelNames, prefix = '') {
  * @param prefix - metrics name prefix
  * request duration
  */
-function requestDurationGenerator(labelNames, buckets, prefix = '') {
+function requestDurationGenerator(labelNames, buckets, metricName, prefix = '') {
   return new Prometheus.Histogram({
-    name: `${prefix}http_request_duration_seconds`,
+    name: `${prefix}${metricName}`,
     help: 'Duration of HTTP requests in seconds',
     labelNames,
     buckets,
