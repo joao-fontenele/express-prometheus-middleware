@@ -1,5 +1,6 @@
 const express = require('express');
-const Prometheus = require('prom-client');
+const OtelApi = require('@opentelemetry/api');
+const Prometheus = require('/home/andrei/dev/prom-client');
 const ResponseTime = require('response-time');
 
 const {
@@ -20,6 +21,8 @@ const defaultOptions = {
   authenticate: null,
   collectDefaultMetrics: true,
   collectGCMetrics: false,
+  enableExemplars: false,
+  contentType: Prometheus.Registry.contentType,
   // buckets for response time from 0.05s to 2.5s
   // these are arbitrary values since i dont know any better ¯\_(ツ)_/¯
   requestDurationBuckets: Prometheus.exponentialBuckets(0.05, 1.75, 8),
@@ -41,24 +44,30 @@ module.exports = (userOptions = {}) => {
   const app = express();
   app.disable('x-powered-by');
 
+  Prometheus.register.setContentType(options.contentType);
+
   const requestDuration = requestDurationGenerator(
     options.customLabels,
     options.requestDurationBuckets,
     options.prefix,
+    options.enableExemplars,
   );
   const requestCount = requestCountGenerator(
     options.customLabels,
     options.prefix,
+    options.enableExemplars,
   );
   const requestLength = requestLengthGenerator(
     options.customLabels,
     options.requestLengthBuckets,
     options.prefix,
+    options.enableExemplars,
   );
   const responseLength = responseLengthGenerator(
     options.customLabels,
     options.responseLengthBuckets,
     options.prefix,
+    options.enableExemplars,
   );
 
   /**
@@ -73,6 +82,18 @@ module.exports = (userOptions = {}) => {
     const route = normalizePath(originalUrl, options.extraMasks);
 
     if (route !== metricsPath) {
+      let exemplarLabels = null;
+      if(options.enableExemplars) {
+        exemplarLabels = {};
+        let current_span = OtelApi.trace.getSpan(OtelApi.context.active());
+        if(current_span) {
+          exemplarLabels = {
+            'traceId': current_span.spanContext().traceId,
+            'spanId': current_span.spanContext().spanId
+          };
+        }
+      }
+
       const status = normalizeStatus
         ? normalizeStatusCode(res.statusCode) : res.statusCode.toString();
 
@@ -81,16 +102,28 @@ module.exports = (userOptions = {}) => {
       if (typeof options.transformLabels === 'function') {
         options.transformLabels(labels, req, res);
       }
-      requestCount.inc(labels);
+      if (exemplarLabels != null) {
+        requestCount.inc({ labels: labels, exemplarLabels: exemplarLabels });
+      } else {
+        requestCount.inc(labels, exemplarLabels);
+      }
 
       // observe normalizing to seconds
-      requestDuration.observe(labels, time / 1000);
+      if (exemplarLabels != null) {
+        requestDuration.observe({ labels: labels, value: (time/1000), exemplarLabels: exemplarLabels });
+      } else {
+        requestDuration.observe(labels, time / 1000);
+      }
 
       // observe request length
       if (options.requestLengthBuckets.length) {
         const reqLength = req.get('Content-Length');
         if (reqLength) {
-          requestLength.observe(labels, Number(reqLength));
+          if (exemplarLabels != null) {
+            requestLength.observe({ labels: labels, value: Number(reqLength), exemplarLabels: exemplarLabels });
+          } else {
+            requestLength.observe(labels, Number(reqLength));
+          }
         }
       }
 
@@ -98,7 +131,11 @@ module.exports = (userOptions = {}) => {
       if (options.responseLengthBuckets.length) {
         const resLength = res.get('Content-Length');
         if (resLength) {
-          responseLength.observe(labels, Number(resLength));
+          if (exemplarLabels != null) {
+            responseLength.observe({ labels: labels, value: Number(resLength), exemplarLabels: exemplarLabels });
+          } else {
+            responseLength.observe(labels, Number(resLength));
+          }
         }
       }
     }
@@ -110,6 +147,7 @@ module.exports = (userOptions = {}) => {
     // used to calculate saturation of the service
     Prometheus.collectDefaultMetrics({
       prefix: options.prefix,
+      enableExemplars: options.enableExemplars,
     });
   }
 
@@ -125,6 +163,7 @@ module.exports = (userOptions = {}) => {
       /* eslint-enable global-require */
       const startGcStats = gcStats(Prometheus.register, {
         prefix: options.prefix,
+        enableExemplars: options.enableExemplars
       });
       startGcStats();
     } catch (err) {
@@ -154,7 +193,7 @@ module.exports = (userOptions = {}) => {
       }
     }
 
-    res.set('Content-Type', Prometheus.register.contentType);
+    res.set('Content-Type', options.contentType);
     return res.end(await Prometheus.register.metrics());
   });
 
